@@ -1,0 +1,118 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+int a[100000],b[100000];
+string A;
+
+int N(char c){
+	switch (c){
+		case 'A':
+			return 10;
+			break;
+		case 'B':
+			return 11;
+			break;
+		case 'C':
+			return 12;
+			break;
+		case 'D':
+			return 13;
+			break;
+		case 'E':
+			return 14;
+			break;
+		case 'F':
+			return 15;
+			break;
+		default:
+			return c-'0';
+	}
+}
+
+char dN(int a){
+	if (a==15)
+		return 'F';
+	if (a==14)
+		return 'E';
+	if (a==13)
+		return 'D';
+	if (a==12)
+		return 'C';
+	if (a==11)
+		return 'B';
+	if (a==10)
+		return 'A';
+	return (char)(a+'0');
+}
+
+void change(string s){
+	int num, times=0;
+	int k, cnt=0;
+	for (int i=s.size()-1; i>=0; i--){
+		num = N(s[i]);
+		k = 1;
+		cnt = 0;
+		while (k <= num){
+			if (k & num){
+				a[cnt+times] += 1;
+			}
+			k <<= 1;
+			cnt++;
+		}
+		times += 4;
+	}
+}void change2(string s){
+	int num, times=0;
+	int k, cnt=0;
+	for (int i=s.size()-1; i>=0; i--){
+		num = N(s[i]);
+		k = 1;
+		cnt = 0;
+		while (k <= num){
+			if (k & num){
+				b[cnt+times] += 1;
+			}
+			k <<= 1;
+			cnt++;
+		}
+		times += 4;
+	}
+}
+
+int main() {
+
+	int idx=0, num, k=1;
+	string s1,s2;
+	cin >> s1 >> s2;
+	change(s1);
+	change2(s2);
+	
+	
+	int cnt, t;
+	for (int i=0; i<40050; i+=4){
+		cnt = 0;
+		t = 1;
+		for (int j=0; j<4; j++){
+			if (a[i+j] != b[i+j]){
+				cnt += t;
+			}
+			t <<= 1;
+		}
+		A += dN(cnt);
+	}
+	
+	bool b=0;
+	for (int i=A.size()-1; i>=0; i--){
+		if (b)
+			cout << A[i];
+		else if (A[i]!='0'){
+			b=1;
+			cout << A[i];
+		}
+	}
+	if (!b)	cout << '0';
+	cout << '\n';
+	
+	return 0;
+}
+
